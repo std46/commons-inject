@@ -132,8 +132,8 @@
         </plugins>
     </build>
     <properties>
-        <maven.compile.target>1.6</maven.compile.target>
-        <maven.compile.source>1.6</maven.compile.source>
+        <maven.compile.target>8</maven.compile.target>
+        <maven.compile.source>8</maven.compile.source>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <commons.project-info.version>2.7</commons.project-info.version>
     </properties>
