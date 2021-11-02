@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Licensed to the Apache Software Foundation (ASF) under one or more
+ contributor license agreements.  See the NOTICE file distributed with
+ this work for additional information regarding copyright ownership.
+ The ASF licenses this file to You under the Apache License, Version 2.0
+ (the "License"); you may not use this file except in compliance with
+ the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+<faqs xmlns="http://maven.apache.org/FML/1.0.1"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/FML/1.0.1 http://maven.apache.org/xsd/fml-1.0.1.xsd"
+  title="Frequently Asked Questions"
+  toplink="false">
+
+  <part id="general">
+    <title>General</title>
+
+    <faq id="whats-commons-inject">
+      <question>
+        What is Commons Inject?
+      </question>
+      <answer>
+        <p>Commons Inject is an implementation of
+        <a href="https://jcp.org/en/jsr/detail?id=330">JSR 330 (Dependency Injection for Java)</a>.
+        Or, in other words: It is a dependency injection framework, like
+        <a href="https://github.com/google">Google Guice</a>, the
+        core part of the <a href="http://projects.spring.io/spring-framework/">Spring Framework</a>,
+        <a href="http://square.github.io/dagger/">Dagger</a>, or several others.</p>
+      </answer>
+    </faq>
+
+    <faq id="standard-compliance">
+      <question>
+        Does Commons Inject really comply to the JSR 330 standard?
+      </question>
+      <answer>
+        <p>Yes, it passes the JSR 330 TCK, with and without static injection.</p>
+        <p>This means, if you have got an application, which is based on an
+          alternative implementation of JSR 330, then it should be really easy,
+          to port that application over to Commons Inject. In general, the only
+          obvious thing to do would be to rewrite the configuration part.
+          However, as Commons Injects configuration closely follows the
+          configuration concepts from Guice, that should be really easy.</p>
+      </answer>
+    </faq>
+
+    <faq id="comparison">
+      <question>
+        How does Commons Inject compare to other JSR 330 implementations?
+      </question>
+      <answer>
+        <p>The author of Commons Inject believes that the framework has the
+        following advantages over its competitors:</p>
+          <ul>
+            <li>It is very small, and lightweight. (As of this writing, it contains
+            only 56 Java classes with 3833 lines of code, including test sources. The
+            complete source distribution will have about only 1MB of data, without
+            compression.</li>
+            <li>The emphasis is on usability, not strictness. For example, there is
+            no need to derive subclasses of a key in order to bind generic classes.
+            Or, you may use strings as names withput converting them to annotations.
+            </li>
+            <li>With usability in mind again: It comes with meaningful extensions
+            integrated. For example, there is a PostConstructModule, which enables
+            initialization and resource cleanup for components. Likewise, you can
+            have loggers, or properties injected into your beans.</li>
+            <li>Commons Inject is based on Java Reflection only. AFAIK, this means
+            it would work on Android, too, unlike Guice.</li>
+            <li>It works standalone. The only jar file you need is commons-inject-YOURVERSION.jar.
+            No additional stuff like Guava, AspectJ, Javassist, or whatever required.</li>
+          </ul>
+      </answer>
+    </faq>
+
+  </part>
+
+  <part id="use">
+
+    <title>Using Commons Inject</title>
+
+    <faq id="how-install">
+      <question>
+        How do I install Commons Inject?
+      </question>
+      <answer>
+        <p>There is no need for a special installation. Just add the jar file to
+        your project, like you would do with any other jar file. In the case of
+        Maven, you would simply declare a dependency like this:
+        </p>
+        <source>
+          &lt;dependencies&gt;
+            &lt;!-- Other dependencies ... --&gt;
+            &lt;dependency&gt;
+              &lt;groupId&gt;org.apache.commons.inject&lt;/groupId&gt;
+              &lt;artifactId&gt;org.apache.commons.inject&lt;/artifactId&gt;
+              &lt;version&gt;YOURVERSION&lt;/version&gt;
+            &lt;dependency/&gt;
+          &lt;dependencies/&gt;
+        </source>
+      </answer>
+    </faq>
+
+  </part>
+
+</faqs>

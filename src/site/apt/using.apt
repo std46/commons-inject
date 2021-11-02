@@ -1,0 +1,81 @@
+~~
+~~ Licensed to the Apache Software Foundation (ASF) under one or more
+~~ contributor license agreements.  See the NOTICE file distributed with
+~~ this work for additional information regarding copyright ownership.
+~~ The ASF licenses this file to You under the Apache License, Version 2.0
+~~ (the "License"); you may not use this file except in compliance with
+~~ the License.  You may obtain a copy of the License at
+~~
+~~      http://www.apache.org/licenses/LICENSE-2.0
+~~
+~~ Unless required by applicable law or agreed to in writing, software
+~~ distributed under the License is distributed on an "AS IS" BASIS,
+~~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+~~ See the License for the specific language governing permissions and
+~~ limitations under the License.
+~~
+     --------------------
+     Using Commons Inject
+     --------------------
+
+  To use Commons Inject, you have to create an
+  {{{./apidocs/org/apache/commons/inject/api/IInjector.html}IInjector}}. The purpose
+  of the IInjector is the creation of POJO's, according to the rules you specify.
+  The IInjector is the direct equivalent of the {{{}Guice Injector}}.
+
+  To create an Injector, you must have some modules that provide the injectors
+  configurtion. There are a few predefined modules:
+
+  [[PostConstructModule]] The {{{./apidocs/org/apache/commons/inject/api/PostConstructModule.html}
+    PostConstruct module}} provides support for an application lifecycle: Your POJO's
+    may be initialized when the aplication starts. And there is also the possibility
+    for a shutdown. See {{{./lifecycle.html}this document}} for details.
+  [[Log4jLoggerModule]]  The {{{./apidocs/org/apache/commons/inject/api/Log4jLoggerModule.html}
+    Log4j Logger module}} allows to have Log4j Loggers injected into your POJO's.
+    Details are described {{{./loggerInjection.html}here}}.
+
+  Of course, the predefined modules will never be sufficient. In practice, you will also
+  have custom modules like this:
+
+----------------------------------------------
+package com.foo.myapp;
+
+import org.apache.commons.inject.api.IModule;
+import org.apache.commons.inject.api.bind.IBinder;
+
+public class MyModule implements IModule {
+  @Override
+  public void configure(IBinder pBinder) {
+    pBinder.setDefaultScope(Scopes.PER_CALL);
+    pBinder.bind(List.class).to(ArrayList.class);
+    pBinder.bind(List.class, "linked").to(LinkedList.class);
+    ... // More bindings.
+  }
+}
+----------------------------------------------
+
+  Assuming that you have created your modules, and you wish to use one or more
+  of the predefined module, then you can create an IInjector like this:
+
+----------------------------------------------
+import org.apache.commons.inject.api.CommonsInject;
+import org.apache.commons.inject.api.IInjector;
+
+public IInjector newInjector() {
+  PostConstructModule module0 = new PostConstructModule();
+  Log4jLoggerModule module1 = new Log4jLoggerModule();
+  MyModule module2 = new MyModule();
+  return CommonsInject.build(module0, module1, module2);
+----------------------------------------------
+
+  That Injector can create POJO's for you, like this:
+
+----------------------------------------------
+  List<Foo> fooList = injector.requireInstance(List.class);
+  List<Bar> barList = injector.requireInstance(List.class, "linked");
+----------------------------------------------
+
+  According to the above configuration, fooList will be an instance
+  of java.util.ArrayList, but barList will be a java.util.LinkedList.
+  
+  

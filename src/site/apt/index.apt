@@ -1,0 +1,67 @@
+~~
+~~ Licensed to the Apache Software Foundation (ASF) under one or more
+~~ contributor license agreements.  See the NOTICE file distributed with
+~~ this work for additional information regarding copyright ownership.
+~~ The ASF licenses this file to You under the Apache License, Version 2.0
+~~ (the "License"); you may not use this file except in compliance with
+~~ the License.  You may obtain a copy of the License at
+~~
+~~      http://www.apache.org/licenses/LICENSE-2.0
+~~
+~~ Unless required by applicable law or agreed to in writing, software
+~~ distributed under the License is distributed on an "AS IS" BASIS,
+~~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+~~ See the License for the specific language governing permissions and
+~~ limitations under the License.
+~~
+     ---------------------
+     Apache Commons Inject
+     ---------------------
+
+  Apache Commons Inject is an implementation of
+  {{{https://jcp.org/en/jsr/detail?id=330}JSR 330: Dependency Injection for Java}}.
+  In other words: It is yet another implementation of JSR 330, much like
+  {{{https://code.google.com/p/google-guice/}Guice}},
+  {{{http://www.mkyong.com/spring3/spring-3-and-jsr-330-inject-and-named-example/}Spring}},
+  {{{http://square.github.io/dagger/}Dagger}}, and some minor others.
+
+  Commons Inject mimicks Guice in most aspects. (For example, if you know the Guice API,
+  you will immediately understand the API of Commons Inject.) However, compared to Guice,
+  you will hopefully note the following differences:
+
+  * Commons Inject is self contained. You don't need Guava, or similar helper jar files.
+
+  * Commons Inject is somewhat easier to use. In particular, you don't need to bother so
+    much about Generics. OTOH, there's no automatic distinction between
+
+------------------------------------
+  @Inject private List someList;
+  @Inject private List<Foo> fooList;
+------------------------------------
+
+  However, that distinction isn't part of JSR 330, anyways. Instead it is suggested
+  that you use the concept of names:
+
+------------------------------------
+  @Inject private List someList;
+  @Inject @Named(value="foo") private List<Foo> fooList;
+------------------------------------
+ 
+  * Commons Inject is based on the standard Java reflection API <<only>>. As a consequence, it
+    should work on Android.
+
+  * Commons Inject doesn't distinguish between production mode, and development mode.
+    OTOH, its startup time should be <<much>> faster than Guice in production mode.
+
+  * Commons Inject provides some extensions out of the box:
+
+    * Support for an {{{./lifecycle.html}Application Lifecycle}}, including support for
+      {{{http://docs.oracle.com/javaee/5/api/javax/annotation/PostConstruct.html}@PostConstruct}},
+      and {{{http://docs.oracle.com/javaee/5/api/javax/annotation/PreDestroy.html}@PreDestroy}}.
+      This lifecycle support works with arbitrary objects, including eager, or lazy
+      singletons.
+
+    * {{{./loggerInjection.html}Logger injection}} via Log4J, SLF4J, or Commons Logging.
+      (Adding support for other frameworks should be extremely easy.)
+
+     

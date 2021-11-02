@@ -1,0 +1,82 @@
+~~
+~~ Licensed to the Apache Software Foundation (ASF) under one or more
+~~ contributor license agreements.  See the NOTICE file distributed with
+~~ this work for additional information regarding copyright ownership.
+~~ The ASF licenses this file to You under the Apache License, Version 2.0
+~~ (the "License"); you may not use this file except in compliance with
+~~ the License.  You may obtain a copy of the License at
+~~
+~~      http://www.apache.org/licenses/LICENSE-2.0
+~~
+~~ Unless required by applicable law or agreed to in writing, software
+~~ distributed under the License is distributed on an "AS IS" BASIS,
+~~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+~~ See the License for the specific language governing permissions and
+~~ limitations under the License.
+~~
+     -----------------------------
+     Application Lifecycle Support
+     -----------------------------
+
+  Commons Inject provides limited application lifecycle support. More specifically, you
+  can have your Pojo's initialized when the application starts and you can also have them
+  perform a graceful shutdown hen the application terminates.
+
+  To achieve that, you must use the <<@PostConstruct>>, and <<@PreDestroy>> annotations,
+  like this:
+
+-----------------------------
+public class MyBean
+  @Inject private ConnectionProvider connectionProvider;
+
+  @PostConstruct
+  public void init() throws SomeException {
+    // Perform initialization on this bean.
+  }
+
+  @PreDestroy
+  public void shutdown() throws OtherException {
+    // Release resources, etc...
+  }
+}
+------------------------------
+
+  The {{{http://docs.oracle.com/javaee/6/tutorial/doc/gmgkd.html}specification}} of <<@PostConstruct>>, and 
+  <<@PreDestroy>> demands, that such methods must be public, non-static, non-abstract, and must not expect
+  parameters. Of course, you need access to other beans, or the like, you can have them injected via
+  @Inject. If there are multiple beans with @PostConstruct: For eager singletons, the order of invocation depends on the order of
+  binding in the modules. Lazy singletons are initialized upon first use.  (Injection into another bean counts as
+  use.)
+
+  Beans with @PreDestroy, OTOH, are invoked in reverse order of initialization.
+
+  Two other things must be done to make use of <<@PostConstruct>>, and <<@PreDestroy>>:
+
+  * The predefined {{{./apidocs/org/apache/commons/inject/api/PostConstructModule.html}PostConstructModule}}
+    must be used when creating the injector. (This module <<must>> be the first in your module list.)
+
+  * You must invoke the methods <<start()>> and <<shutdown()>> on the modules
+    {{{./apidocs/org/apache/commons/inject/api/ILifycycleController}lifecycle controller}}
+
+  In other words, a typical application would look like this:
+
+--------------------------------
+public class MyApp {
+  public static void main() throws Exception {
+    final IModule postConstructModule = new PostConstructModule();
+    final IModule module1 = new MyModule1();
+    final IModule module2 = new MyModule2();
+    // Note: The PostConstructModule is first in the list.
+    final IInjctor injector = CommonsInject.build(postConstructModule, module1, module2);
+    // A binding for the controller was created automatically by the PostConstructModule.
+    final ILifecycleController controller = injector.getInstance(ILifecycleController.class);
+    // Initialize the beans with @PostConstruct
+    controller.start();
+    // Do the real work here.
+    ...
+    // Terminate the beans with @PreDestroy
+    controller.shutdown();
+  }
+}
+--------------------------------
+  

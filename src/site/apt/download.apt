@@ -1,0 +1,34 @@
+~~
+~~ Licensed to the Apache Software Foundation (ASF) under one or more
+~~ contributor license agreements.  See the NOTICE file distributed with
+~~ this work for additional information regarding copyright ownership.
+~~ The ASF licenses this file to You under the Apache License, Version 2.0
+~~ (the "License"); you may not use this file except in compliance with
+~~ the License.  You may obtain a copy of the License at
+~~
+~~      http://www.apache.org/licenses/LICENSE-2.0
+~~
+~~ Unless required by applicable law or agreed to in writing, software
+~~ distributed under the License is distributed on an "AS IS" BASIS,
+~~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+~~ See the License for the specific language governing permissions and
+~~ limitations under the License.
+~~
+
+     -----------------------
+     Download
+     -----------------------
+
+Downloading Commons Inject
+
+  As of this writing, Commons Inject is not yet a proper subproject of
+  {{{http://commons.apache.org}Apache Commons}}. Instead it lives in the
+  {{{http://commons.apache.org/sandbox.html}Sandbox}}. This means, that
+  you cannot simply download a jar file and use it.
+
+  Instead, you must {{{./building.html}download the sources and build}} the
+  jar file for yourself. Sorry for the inconvenience.
+
+  If and when Commons Inject, should become a proper subproject, you will
+  be able to use {{{http://www.apache.org/dyn/closer.cgi/commons/inject}this URL}}
+  to download releases.
